@@ -98,5 +98,11 @@ def youtube_oauth_callback():
     flow.fetch_token(authorization_response=authorization_response)
 
     credentials = flow.credentials
-    return jsonify(credentials)
+    return jsonify({
+    'token': credentials.token,
+    'refresh_token': credentials.refresh_token,
+    'token_uri': credentials.token_uri,
+    'client_id': credentials.client_id,
+    'client_secret': credentials.client_secret,
+    'scopes': credentials.scopes})
 
