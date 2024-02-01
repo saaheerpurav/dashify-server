@@ -99,6 +99,6 @@ def youtube_oauth_callback():
     flow.fetch_token(authorization_response=authorization_response)
     credentials = flow.credentials
     
-    parameters = dict(access_token=credentials.token_uri, refresh_token=credentials.refresh_token)
+    parameters = dict(access_token=credentials.token, refresh_token=credentials.refresh_token)
     return redirect("http://localhost:3000/dashboard/integration/youtube?" + urlencode(parameters))
 
