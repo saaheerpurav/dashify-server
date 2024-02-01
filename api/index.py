@@ -92,11 +92,11 @@ def youtube_oauth_callback():
         'client_secret.json',
         scopes=["https://www.googleapis.com/auth/youtube.readonly", "https://www.googleapis.com/auth/yt-analytics-monetary.readonly","https://www.googleapis.com/auth/yt-analytics.readonly"]
     )
-    flow.redirect_uri = "http://localhost:3000/dashboard/integration/youtube"
+    flow.redirect_uri = url_for('youtube_oauth_callback', _external=True)
 
     authorization_response = request.url
     flow.fetch_token(authorization_response=authorization_response)
-    credentials = flow.credentials
-    print(credentials)
 
-    return "ok"
+    credentials = flow.credentials
+    return jsonify(credentials)
+
