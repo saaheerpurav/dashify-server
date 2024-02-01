@@ -6,6 +6,7 @@ from io import StringIO
 
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
+from urllib.parse import urlencode
 
 app = Flask(__name__)
 CORS(app)
@@ -96,13 +97,8 @@ def youtube_oauth_callback():
 
     authorization_response = request.url
     flow.fetch_token(authorization_response=authorization_response)
-
     credentials = flow.credentials
-    return jsonify({
-    'token': credentials.token,
-    'refresh_token': credentials.refresh_token,
-    'token_uri': credentials.token_uri,
-    'client_id': credentials.client_id,
-    'client_secret': credentials.client_secret,
-    'scopes': credentials.scopes})
+    
+    parameters = dict(access_token=credentials.token_uri, refresh_token=credentials.refresh_token)
+    return redirect("http://localhost:3000/dashboard/integration/youtube?" + urlencode(parameters))
 
