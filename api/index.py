@@ -3,6 +3,7 @@ from flask_cors import CORS
 import requests
 import csv
 from io import StringIO
+import json
 
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
@@ -98,7 +99,12 @@ def youtube_oauth_callback():
     authorization_response = request.url
     flow.fetch_token(authorization_response=authorization_response)
     credentials = flow.credentials
-    
-    parameters = dict(access_token=credentials.token, refresh_token=credentials.refresh_token)
-    return redirect("http://localhost:3000/dashboard/integration/youtube?" + urlencode(parameters))
 
+    parameters = dict(access_token=credentials.token, refresh_token=credentials.refresh_token)
+    #return redirect("http://localhost:3000/dashboard/integration/youtube?" + urlencode(parameters))
+    return redirect("https://usedashify.com/dashboard/integration/youtube?" + urlencode(parameters))
+
+@app.route('/fetch_youtube_refresh_token', methods=['GET'])
+def fetch_youtube_refresh_token():
+    response = requests.request("POST", f"https://accounts.google.com/o/oauth2/token?client_id={client_secret_data['client_id']}&client_secret={client_secret_data['client_secret']}&refresh_token={request.args.get('refresh_token')}&grant_type=refresh_token")
+    return jsonify(response.json())
