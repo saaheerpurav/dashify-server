@@ -12,6 +12,10 @@ from urllib.parse import urlencode
 app = Flask(__name__)
 CORS(app)
 
+secret_file = open('client_secret.json')
+client_secret_data = (json.load(secret_file))["web"]
+secret_file.close()
+
 def fetch_csv_and_convert_to_list(url):
     try:
         response = requests.get(url, stream=True)
