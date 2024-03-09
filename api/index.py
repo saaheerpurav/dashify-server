@@ -112,3 +112,39 @@ def youtube_oauth_callback():
 def fetch_youtube_refresh_token():
     response = requests.request("POST", f"https://accounts.google.com/o/oauth2/token?client_id={client_secret_data['client_id']}&client_secret={client_secret_data['client_secret']}&refresh_token={request.args.get('refresh_token')}&grant_type=refresh_token")
     return jsonify(response.json())
+
+
+
+@app.route('/fetch_hubspot_access_token', methods=['POST'])
+def fetch_hubspot_access_token():
+    data = request.get_json()
+    
+    payload=f'grant_type={data["grant_type"]}&client_id={data["client_id"]}&client_secret={data["client_secret"]}&redirect_uri={data["redirect_uri"]}&code={data["code"]}'
+    headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    }
+
+    response = requests.request("POST", "https://api.hubapi.com/oauth/v1/token", headers=headers, data=payload)
+    return jsonify(response.json())
+
+@app.route('/fetch_hubspot_refresh_token', methods=['POST'])
+def fetch_hubspot_refresh_token():
+    data = request.get_json()
+    
+    payload=f'grant_type={data["grant_type"]}&client_id={data["client_id"]}&client_secret={data["client_secret"]}&refresh_token={data["refresh_token"]}'
+    headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    }
+
+    response = requests.request("POST", "https://api.hubapi.com/oauth/v1/token", headers=headers, data=payload)
+    return jsonify(response.json())
+
+@app.route('/fetch_hubspot_contacts', methods=['GET'])
+def fetch_hubspot_contacts():
+    token = request.args.get("token")
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {token}'
+    }
+    response = requests.request("GET", "https://api.hubapi.com/contacts/v1/lists/all/contacts/all", headers=headers)
+    return jsonify(response.json())
