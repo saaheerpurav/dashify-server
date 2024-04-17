@@ -80,7 +80,8 @@ def fetch_airtable_refresh_token():
 def fetch_youtube_access_token():
     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
         'client_secret.json',
-        scopes=["https://www.googleapis.com/auth/youtube.readonly", "https://www.googleapis.com/auth/yt-analytics-monetary.readonly","https://www.googleapis.com/auth/yt-analytics.readonly"]
+        #scopes=["https://www.googleapis.com/auth/youtube.readonly", "https://www.googleapis.com/auth/yt-analytics-monetary.readonly","https://www.googleapis.com/auth/yt-analytics.readonly"]
+        scopes=["https://www.googleapis.com/auth/yt-analytics.readonly"]
     )
     #flow.redirect_uri = "http://localhost:3000/dashboard/integration/youtube"
     flow.redirect_uri = url_for('youtube_oauth_callback', _external=True)
@@ -96,7 +97,8 @@ def fetch_youtube_access_token():
 def youtube_oauth_callback():
     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
         'client_secret.json',
-        scopes=["https://www.googleapis.com/auth/youtube.readonly", "https://www.googleapis.com/auth/yt-analytics-monetary.readonly","https://www.googleapis.com/auth/yt-analytics.readonly"]
+        #scopes=["https://www.googleapis.com/auth/youtube.readonly", "https://www.googleapis.com/auth/yt-analytics-monetary.readonly","https://www.googleapis.com/auth/yt-analytics.readonly"]
+        scopes=["https://www.googleapis.com/auth/yt-analytics.readonly"]
     )
     flow.redirect_uri = url_for('youtube_oauth_callback', _external=True)
 
@@ -105,8 +107,8 @@ def youtube_oauth_callback():
     credentials = flow.credentials
 
     parameters = dict(access_token=credentials.token, refresh_token=credentials.refresh_token)
-    #return redirect("http://localhost:3000/dashboard/integration/youtube?" + urlencode(parameters))
-    return redirect("https://usedashify.com/dashboard/integration/youtube?" + urlencode(parameters))
+    return redirect("http://localhost:3000/dashboard/integration/youtube?" + urlencode(parameters))
+    #return redirect("https://usedashify.com/dashboard/integration/youtube?" + urlencode(parameters))
 
 @app.route('/fetch_youtube_refresh_token', methods=['GET'])
 def fetch_youtube_refresh_token():
