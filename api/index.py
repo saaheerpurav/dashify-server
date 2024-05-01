@@ -102,8 +102,7 @@ def youtube_oauth_callback():
     authorization_response = request.url
     flow.fetch_token(authorization_response=authorization_response)
     credentials = flow.credentials
-    print(credentials)
-    print(credentials.refresh_token)
+
     parameters = dict(access_token=credentials.token, refresh_token=credentials.refresh_token)
     #return redirect("http://localhost:3000/dashboard/integration/youtube?" + urlencode(parameters))
     return redirect("https://usedashify.com/dashboard/integration/youtube?" + urlencode(parameters))
