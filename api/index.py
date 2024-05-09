@@ -10,6 +10,8 @@ import google_auth_oauthlib.flow
 from urllib.parse import urlencode
 
 app = Flask(__name__)
+app.secret_key = "1c397734b76a4c59bde7c419678f2de5"
+
 CORS(app)
 
 secret_file = open('client_secret.json')
