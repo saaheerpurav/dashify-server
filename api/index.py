@@ -81,7 +81,7 @@ def fetch_airtable_refresh_token():
 @app.route('/fetch_youtube_access_token', methods=['GET'])
 def fetch_youtube_access_token():
     if "reauth" in request.args:
-        session["reauth"] = request.args.get("reauth")
+        session["reauth"] = True
     
     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
         'client_secret.json',
@@ -111,7 +111,6 @@ def youtube_oauth_callback():
     parameters = dict(access_token=credentials.token, refresh_token=credentials.refresh_token)
 
     if session.get("reauth") == True:
-        print(session.get("reauth"))
         parameters["reauth"] = True
     
     #return redirect("http://localhost:3000/dashboard/integration/youtube?" + urlencode(parameters))
