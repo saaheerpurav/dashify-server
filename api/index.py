@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, redirect, url_for
+from flask import Flask, request, jsonify, redirect, url_for, session
 from flask_cors import CORS
 import requests
 import csv
@@ -78,6 +78,11 @@ def fetch_airtable_refresh_token():
 
 @app.route('/fetch_youtube_access_token', methods=['GET'])
 def fetch_youtube_access_token():
+    data = request.get_json()
+
+    if "reauth" in data:
+        session["reauth"] = True
+    
     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
         'client_secret.json',
         scopes=["https://www.googleapis.com/auth/yt-analytics.readonly", "https://www.googleapis.com/auth/yt-analytics-monetary.readonly"]
@@ -104,6 +109,10 @@ def youtube_oauth_callback():
     credentials = flow.credentials
 
     parameters = dict(access_token=credentials.token, refresh_token=credentials.refresh_token)
+
+    if session.get("reauth") == True:
+        parameters["reauth"] = True
+    
     #return redirect("http://localhost:3000/dashboard/integration/youtube?" + urlencode(parameters))
     return redirect("https://usedashify.com/dashboard/integration/youtube?" + urlencode(parameters))
 
