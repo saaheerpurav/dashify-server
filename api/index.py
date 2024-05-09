@@ -111,6 +111,7 @@ def youtube_oauth_callback():
     parameters = dict(access_token=credentials.token, refresh_token=credentials.refresh_token)
 
     if session.get("reauth") == True:
+        print(session.get("reauth"))
         parameters["reauth"] = True
     
     #return redirect("http://localhost:3000/dashboard/integration/youtube?" + urlencode(parameters))
