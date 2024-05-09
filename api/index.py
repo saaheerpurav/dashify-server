@@ -78,10 +78,8 @@ def fetch_airtable_refresh_token():
 
 @app.route('/fetch_youtube_access_token', methods=['GET'])
 def fetch_youtube_access_token():
-    data = request.get_json()
-
-    if "reauth" in data:
-        session["reauth"] = True
+    if "reauth" in request.args:
+        session["reauth"] = request.args.get("reauth")
     
     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
         'client_secret.json',
